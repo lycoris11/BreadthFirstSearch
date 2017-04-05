@@ -22,27 +22,29 @@ public final class lab2 {
      * Put a short phrase describing the static method myMethod here.
      */
     private static void breadthFirstSearch(int[] v, int[][] a, int[] p, int k) {
-        for (int i = 0; i < v.length; i++) {
-            if (v[i] == 0) { //for each vertex not visited
-                v[i] = 1;
-                p[i] = 1;
 
-                lab2.Queue q = new lab2.Queue();
-                q.enqueue(1);
+        if (v[k] == 0) { //for each vertex not visited
+            lab2.Queue q = new lab2.Queue();
+            v[k] = 1;
+            p[k] = 0;
+            q.enqueue(k);
 
-                while (q.size() > 0) {
-                    int newI = q.dequeue();
-                    for (int j = 0; j < a[newI].length; j++) {
-                        if (a[newI][j] == 1) {
-                            if (v[j] == 0) {
-                                v[j] = 1;
-                                p[j] += 1;
-                            }
+            while (q.length() > 0) {
+                k = q.dequeue();
+                for (int j = 0; j < a[k].length; j++) {
+                    if (a[k][j] == 1) {
+                        if (v[j] == 0) {
+                            q.enqueue(j);
+                            v[j] = 1;
+                            p[j] = p[k] + 1;
+                            //System.out.print("\n");
+                            System.out.println(j + 1 + " " + p[j]);
                         }
-                    } //END INNER FOR
-                } // END WHIlE
-            } // END IF
-        } // END OUTER FOR
+                    }
+                }
+                //END INNER FOR
+            } // END WHIlE
+        } // END IF
     }
 
     /**
@@ -113,7 +115,7 @@ public final class lab2 {
          *
          * @return size of queue
          */
-        public final int size() {
+        public final int length() {
             return this.q.length;
         }
 
@@ -157,16 +159,22 @@ public final class lab2 {
             }
         }
 
-        int numComponents = 1;
-        System.out.print("Component:");
+        for (int i = 0; i < n; i++) {
+            vList[i] = 0;
+            pLen[i] = 0;
+        }
 
+        int numComponents = 1;
+        System.out.print("Component: " + numComponents + "\n");
+        System.out.println("1 0");
         breadthFirstSearch(vList, arr, pLen, 0);
 
         for (int k = 0; k < vList.length; k++) {
             if (vList[k] == 0) {
                 numComponents++;
                 System.out.println();
-                System.out.print("Component:");
+                System.out.print("Component: " + numComponents + "\n");
+                System.out.println(k + 1 + " 0");
                 breadthFirstSearch(vList, arr, pLen, k);
             }
         }
